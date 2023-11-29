@@ -1,0 +1,11 @@
+# adds .vscode folder to ignored files
+.vscode/**/*
+
+# exclude these files from being ignored
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
