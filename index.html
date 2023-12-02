@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">    
   <head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <!-- Estilização -->
+      <!-- Main Style -->
+      <link rel="stylesheet" type="text/css" href="styles/main.css">
+
+    
     <!-- Scripts -->
       <!-- D3js -->
       <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -14,10 +18,17 @@
     
 
       <!-- Locals -->
-      <script src="js/copy-dorling-script.js"></script>
+      <script src="./js/ecosistema/funcoes.js"></script>
+      <script>
+        let k = 70
+      </script>
+      <!-- <script src="js/copy-dorling-script.js"></script>
+      <script src="js/copy-demers-script.js"></script> -->
+      <script src="js/from-demers-test.js"></script>
   </head>
   
   <body>
     <div id="container"></div>
+    <input type="range" id="testingRange">
   </body>
 </html>

@@ -1,5 +1,4 @@
-let k = 60
-let svg
+let dorling_svg
 
 window.onload = function(){
     const data = d3.csv("data/UFO_sights.csv")
@@ -161,16 +160,14 @@ window.onload = function(){
       
       
       
-          svg = d3
+          dorling_svg = d3
             .create("svg")
             .attr("viewBox", [0, 0, width, height])
             .style("width", "100%")
             .style("height", "auto");
       
-            svg.call(template)
-            svg.call(dorling)
-      
-          console.log(svg)
+            dorling_svg.call(template)
+            dorling_svg.call(dorling)
         }
       )
 
