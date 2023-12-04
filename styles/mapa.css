@@ -1,0 +1,39 @@
+svg#mapa{
+    scale: 1.5;
+}
+
+svg#mapa g.quadrados{
+    fill: black;
+}
+
+svg#mapa g.quadrados > rect{
+    transform-origin: center center;
+    transition: 150ms width, 150ms height, 150ms translate;
+}
+
+
+
+
+svg#mapa g.quadrados > rect:not(.nenhum).over{
+    fill: red;
+}
+
+    svg#mapa:has(.over) rect:not(.nenhum):not(.over){
+        fill: green;
+    }
+
+
+
+svg#mapa g.quadrados > rect.nenhum{
+    opacity: 0.2;
+}
+
+    svg#mapa g.quadrados > rect:not(.nenhum):hover,
+    svg#mapa g.labels > text:not(.nenhum):hover{
+        cursor: pointer;
+    }
+
+    svg#mapa g.quadrados > rect.nenhum:hover,
+    svg#mapa g.labels > text.nenhum:hover{
+        cursor: default;
+    }

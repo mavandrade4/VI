@@ -68,4 +68,12 @@ const setDadosAtuais = () => {
         }
         return (ANO === ano.atual)
       })
+    
+    const atualOnit = document.querySelector('span.onit')
+    if(atualOnit !== null) atualOnit.classList.remove('onit')
+    document.querySelector('span[name="' + ano.atual + '"]').classList.add('onit')
+}
+
+const addOnLoad = (fun) => {
+    return window.addEventListener('load', fun)
 }

@@ -1,0 +1,65 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html, body{
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+.centrado_absolute{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+
+#divSlider{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    width: 95%;
+    margin-bottom: 32px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#divSlider > * {
+    position: relative;
+    width: 100%;
+}
+
+    #divSlider > ul {
+        list-style: none;
+        display: flex;
+        height: 10px;
+    }
+
+    #divSlider > ul > li{
+        outline: white solid 1px;
+        flex-grow: 1;
+        position: relative;
+    }
+
+    #divSlider > ul > li > span{
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        translate: -50% -80%;
+        font-size: 70%;
+        font-weight: 500;
+
+        position: absolute;
+        left: 50%;
+    }
+
+    #divSlider > ul > li > span.onit{
+        font-weight: 700;
+        font-size: 90%;
+    }
+
+    #divSlider > ul > li > span.notexist{
+        opacity: 0.2;
+    }

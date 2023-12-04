@@ -4,6 +4,8 @@
     <!-- Estilização -->
       <!-- Main Style -->
       <link rel="stylesheet" type="text/css" href="styles/main.css">
+      <!-- Estilo do Mapa da primeira página -->
+      <link rel="stylesheet" type="text/css" href="styles/mapa.css">
 
     
     <!-- Scripts -->
@@ -18,17 +20,26 @@
     
 
       <!-- Locals -->
-      <script src="./js/ecosistema/funcoes.js"></script>
-      <script>
-        let k = 70
-      </script>
-      <!-- <script src="js/copy-dorling-script.js"></script>
-      <script src="js/copy-demers-script.js"></script> -->
-      <script src="js/from-demers-test.js"></script>
+        <!-- script com funcoes "globais" -->
+          <script src="./js/ecosistema/funcoes.js"></script>
+
+        <!-- testing do código 100% copiado de https://observablehq.com/@neocartocnrs/dorling-vs-demers -->
+          <!-- <script src="js/copy-dorling-script.js"></script>
+          <script src="js/copy-demers-script.js"></script> -->
+      
+        <!-- script sobre o input range (#sliderAnos) que define o ano atual a ser visto no mapa -->
+          <script src="js/ecosistema/doSlider.js"></script>
+        <!-- script referente ao load do CSV e da criação de objetos de manuseamento relativos aos dados do mesmo -->
+          <script src="./js/onload/loadDadosTratados.js"></script>
+        <!-- script do load de dados sobre cada país e definição de funções relativas ao manuseamento do mapa-->
+          <script src="js/onload/from-demers-test.js"></script>
   </head>
   
   <body>
     <div id="container"></div>
-    <input type="range" id="testingRange">
+    <div id="divSlider">
+      <ul id="labelAnos"></ul>
+      <input type="range" id="sliderAnos">
+    </div>
   </body>
 </html>
