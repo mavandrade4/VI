@@ -168,6 +168,7 @@ const createMap = (template) => {
   const data1 = TOPOJSON_COUNTRIES.features
           .map((d) => {
             const id = d.properties.ISO2;
+            const nomePais = d.properties.NAMEen
             const appears = d.properties.UFOAppears
             let duracoes = []
 
@@ -179,7 +180,8 @@ const createMap = (template) => {
 
 
             return {
-              id,
+              nomePais: nomePais,
+              id: id,
               coords: Poly2Center(d),
               appears: appears,
               duracoes: duracoes
@@ -278,8 +280,30 @@ const createMap = (template) => {
             .attr("transform", d => `translate(${d.x}, ${d.y})`)
             .attr("name", (d) => d.id)
             .attr("class", (d) => (d.appears === 0) ? "nenhum" : null)
-            .on('mouseover', (e) => d3.select(e.currentTarget).classed('over', true))
-            .on('mouseleave', (e) => d3.select(e.currentTarget).classed('over', false))
+            .on('mouseover', (e, d) => {
+              d3.select(e.currentTarget).classed('over', true)
+
+              const infoPais = d3.select(mapaDataInfo)
+                                 .classed('show', true)
+
+              infoPais.select('h4')
+                      .html(`${d.nomePais} | ${d.id}`)
+
+
+              infoPais.selectAll('li')
+                .data(graficoTorta(d.duracoes))
+                .html(data => `${data.value} (${Math.round(1000 * (data.endAngle - data.startAngle) / (2 * Math.PI)) / 10}%)`)
+            })
+            .on('mouseleave', (e) => {
+              d3.select(e.currentTarget).classed('over', false)
+              d3.select(mapaDataInfo).classed('show', false)
+            })
+            .on('mousemove', (e) => {
+              d3.select(mapaDataInfo)
+                .attr("style",
+                      `top: ${(e.clientY < window.innerHeight*0.5) ? (e.clientY + 20) : (e.clientY - 20 - mapaDataInfo.clientHeight)}px;
+                      left:${(e.clientX < window.innerWidth*0.5) ? (e.clientX + 20) : (e.clientX - 20 - mapaDataInfo.clientWidth)}px;`)
+            })
       
       node
           .append("circle")

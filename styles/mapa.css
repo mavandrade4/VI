@@ -47,3 +47,27 @@ svg#mapa g.piecharts > g.nenhum > circle{
     svg#mapa g.labels > text.nenhum:hover{
         cursor: default;
     }
+
+
+/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+#mapaDataInfo{
+    position: absolute;
+    background-color: aquamarine;
+
+    padding: 8px;
+    opacity: 0;
+    z-index: -10;
+
+    transition: opacity 300ms;
+}
+    #mapaDataInfo.show{
+        opacity: 1;
+        z-index: 1;
+    }
+
+    #mapaDataInfo > ul > li#segundos:before     { content: "segundos: "; }
+    #mapaDataInfo > ul > li#minutos:before      { content: "minutos: "; }
+    #mapaDataInfo > ul > li#horas:before        { content: "horas: "; }
+    #mapaDataInfo > ul > li#dias:before         { content: "dias: "; }
+    #mapaDataInfo > ul > li#trintaDias:before   { content: "trintaDias: "; }
+    #mapaDataInfo > ul > li#anos:before         { content: "anos: "; }
