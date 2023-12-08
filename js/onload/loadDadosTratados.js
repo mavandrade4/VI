@@ -33,6 +33,32 @@ let dadosAtuais = {
   anos: []
 }
 
+/* ====================
+    colocar os dados atuais relativos ao intervalo selecionado
+*/
+const setDadosAtuais = () => {
+  dadosAtuais = {
+      indexes: [],
+      anos: [],
+      objetos: []
+  }
+  
+  dadosAtuais.anos = todosAnos.filter((ANO, index) => {
+      if(ANO === ano.atual){
+          dadosAtuais.objetos.push(dataTotal[index])
+          dadosAtuais.indexes.push(index)
+      }
+      return (ANO === ano.atual)
+    })
+  
+  const atualOnit = document.querySelector('span.onit')
+  if(atualOnit !== null) atualOnit.classList.remove('onit')
+  document.querySelector('span[name="' + ano.atual + '"]').classList.add('onit')
+}
+
+/* ====================
+    dar load aos dados tratados
+*/
 const loadDadosTratados = (after) => {
     
 

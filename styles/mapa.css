@@ -6,34 +6,44 @@ svg#mapa g.quadrados{
     fill: black;
 }
 
-svg#mapa g.quadrados > rect{
-    transform-origin: center center;
-    transition: 150ms width, 150ms height, 150ms translate;
+
+/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+svg#mapa g.piecharts > g:not(.nenhum) > *{
+    transition: 150ms scale;
+    stroke: none;
 }
 
+    svg#mapa g.piecharts > g:not(.nenhum) > circle{ fill: none; }
 
 
+/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+svg#mapa g.piecharts > g:not(.nenhum).over > *{ scale: 1.05; }
 
-svg#mapa g.quadrados > rect:not(.nenhum).over{
-    fill: red;
-}
+    svg#mapa g.piecharts > g:not(.nenhum).over > circle{
+        stroke: rgba(0, 0, 0, 0.6);
+        stroke-width: 3;
+        filter: blur(4px);
+    }
 
-    svg#mapa:has(.over) rect:not(.nenhum):not(.over){
-        fill: green;
+    svg#mapa:has(.over) g.piecharts > g:not(.nenhum):not(.over) > *{
+        filter: brightness(0.8);
+        scale: 0.75;
     }
 
 
 
-svg#mapa g.quadrados > rect.nenhum{
+/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+svg#mapa g.piecharts > g.nenhum > circle{
     opacity: 0.2;
+    fill: green;
 }
 
-    svg#mapa g.quadrados > rect:not(.nenhum):hover,
+    svg#mapa g.piecharts > g:not(.nenhum) > *:hover,
     svg#mapa g.labels > text:not(.nenhum):hover{
         cursor: pointer;
     }
 
-    svg#mapa g.quadrados > rect.nenhum:hover,
+    svg#mapa g.piecharts > g.nenhum > *:hover,
     svg#mapa g.labels > text.nenhum:hover{
         cursor: default;
     }

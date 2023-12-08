@@ -1,3 +1,6 @@
+/* ====================
+    settar as qualidades do slider de tempo
+*/
 const doSlider = () => {
     sliderAnos.min = ano.min
     sliderAnos.max = ano.max
@@ -8,7 +11,7 @@ const doSlider = () => {
         if(todosAnos.includes(sl_value)){
             ano.atual = sl_value
             setDadosAtuais()
-            setAppears()
+            setNewData()
             createMap(template)
         }
     }

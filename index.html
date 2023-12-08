@@ -32,14 +32,29 @@
         <!-- script referente ao load do CSV e da criação de objetos de manuseamento relativos aos dados do mesmo -->
           <script src="./js/onload/loadDadosTratados.js"></script>
         <!-- script do load de dados sobre cada país e definição de funções relativas ao manuseamento do mapa-->
-          <script src="js/onload/from-demers-test.js"></script>
+          <script src="js/onload/loadInfo.js"></script>
   </head>
   
   <body>
     <div id="container"></div>
+
     <div id="divSlider">
       <ul id="labelAnos"></ul>
       <input type="range" id="sliderAnos">
+    </div>
+
+    <div id="mapaDataInfo">
+      <h4>US</h4>
+      <h6>aparecimentos</h6>
+      <br>
+      <ul>
+        <li id="segundos"></li>
+        <li id="minutos"></li>
+        <li id="horas"></li>
+        <li id="dias"></li>
+        <li id="trintaDias"></li>
+        <li id="anos"></li>
+      </ul>
     </div>
   </body>
 </html>

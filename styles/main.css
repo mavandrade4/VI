@@ -8,6 +8,14 @@ html, body{
     font-family: sans-serif;
 }
 
+ul{
+    list-style: none;
+}
+
+li{
+    font-size: small;
+}
+
 .centrado_absolute{
     position: absolute;
     top: 50%;
@@ -63,3 +71,20 @@ html, body{
     #divSlider > ul > li > span.notexist{
         opacity: 0.2;
     }
+
+
+#mapaDataInfo{
+    position: absolute;
+    background-color: aquamarine;
+    min-width: 300px;
+    min-height: 50px;
+
+    padding: 8px;
+}
+
+    #mapaDataInfo > ul > li#segundos:before     { content: "segundos: "; }
+    #mapaDataInfo > ul > li#minutos:before      { content: "minutos: "; }
+    #mapaDataInfo > ul > li#horas:before        { content: "horas: "; }
+    #mapaDataInfo > ul > li#dias:before         { content: "dias: "; }
+    #mapaDataInfo > ul > li#trintaDias:before   { content: "trintaDias: "; }
+    #mapaDataInfo > ul > li#anos:before         { content: "anos: "; }
