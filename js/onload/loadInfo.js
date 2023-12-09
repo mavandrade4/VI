@@ -122,6 +122,8 @@ const setNewData = () => {
         trintaDias: [],
         anos: []
       }
+      TOPOJSON_COUNTRIES.features[index].properties.shapeGroups = []
+      TOPOJSON_COUNTRIES.features[index].properties.mostShapeGroup = ''
     }
   )
 
@@ -145,10 +147,16 @@ const setNewData = () => {
               (duracao < 60 * 60 * 24 * 30 * 12) ? "trintaDias" :
               "anos"
             ].push(duracao)
+
+            TOPOJSON_COUNTRIES.features[index].properties.shapeGroups.push(obj["shape group"])
           }
         }
       )
     }
+  )
+
+  TOPOJSON_COUNTRIES.features.forEach(
+    paisInfo => paisInfo.properties.mostShapeGroup = moda(paisInfo.properties.shapeGroups)
   )
 
 }
@@ -167,8 +175,9 @@ const createMap = (template) => {
   
   const data1 = TOPOJSON_COUNTRIES.features
           .map((d) => {
-            const id = d.properties.ISO2;
+            const id = d.properties.ISO2
             const nomePais = d.properties.NAMEen
+            const mostShapeGroup = d.properties.mostShapeGroup
             const appears = d.properties.UFOAppears
             let duracoes = []
 
@@ -180,6 +189,7 @@ const createMap = (template) => {
 
 
             return {
+              mostShapeGroup: mostShapeGroup,
               nomePais: nomePais,
               id: id,
               coords: Poly2Center(d),
@@ -280,6 +290,8 @@ const createMap = (template) => {
             .attr("transform", d => `translate(${d.x}, ${d.y})`)
             .attr("name", (d) => d.id)
             .attr("class", (d) => (d.appears === 0) ? "nenhum" : null)
+
+          node.filter(d => d.appears > 0)
             .on('mouseover', (e, d) => {
               d3.select(e.currentTarget).classed('over', true)
 
@@ -293,6 +305,8 @@ const createMap = (template) => {
               infoPais.selectAll('li')
                 .data(graficoTorta(d.duracoes))
                 .html(data => `${data.value} (${Math.round(1000 * (data.endAngle - data.startAngle) / (2 * Math.PI)) / 10}%)`)
+              
+              infoPais.select("#msshape").html(d.mostShapeGroup)
             })
             .on('mouseleave', (e) => {
               d3.select(e.currentTarget).classed('over', false)
@@ -305,9 +319,8 @@ const createMap = (template) => {
                       left:${(e.clientX < window.innerWidth*0.5) ? (e.clientX + 20) : (e.clientX - 20 - mapaDataInfo.clientWidth)}px;`)
             })
       
-      node
-          .append("circle")
-            .attr("r", (d) => radius(d.appears))
+      node.append("circle")
+          .attr("r", (d) => radius(d.appears))
           
       let k = 0;
       let indexes = 0;
@@ -325,6 +338,13 @@ const createMap = (template) => {
 
       node.filter(d => d.appears === 0)
           .selectAll("path").remove()
+      
+      /* node.append("text").text(d => d.mostShapeGroup) */
+      node.append("image")
+          .attr('xlink:href', d => `./shapes/${getImageByShapeGroup(d.mostShapeGroup, 1)}`)
+          .attr('width', d => radius(d.appears))
+          .attr('x', d => -radius(d.appears)*0.5)
+          .attr('y', d => -radius(d.appears)*0.5)
 
       /* node.filter(d => d.appears === 0)
           .append("circle")
@@ -333,7 +353,7 @@ const createMap = (template) => {
 
     
   
-      const labels = selection
+      /* const labels = selection
         .append("g")
         .attr("class", "labels")
         .attr("text-anchor", "middle")
@@ -350,11 +370,11 @@ const createMap = (template) => {
         .attr("fill", "white")
         .style("font-size", (d) => `${radius(d.appears) * 0.55}px`)
         .attr("alignment-baseline", "central")
-            .attr("class", (d) => (d.appears === 0) ? "nenhum" : null)
+            .attr("class", (d) => (d.appears === 0) ? "nenhum" : null) */
   
       simulation.on("tick", () => {
         node.attr("transform", d => `translate(${d.x}, ${d.y})`)
-        labels.attr("x", (d) => d.x).attr("y", (d) => d.y);
+        /* labels.attr("x", (d) => d.x).attr("y", (d) => d.y); */
       });
   
     /* invalidation.then(() => simulation.stop()); */

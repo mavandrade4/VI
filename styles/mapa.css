@@ -65,9 +65,15 @@ svg#mapa g.piecharts > g.nenhum > circle{
         z-index: 1;
     }
 
-    #mapaDataInfo > ul > li#segundos:before     { content: "segundos: "; }
-    #mapaDataInfo > ul > li#minutos:before      { content: "minutos: "; }
-    #mapaDataInfo > ul > li#horas:before        { content: "horas: "; }
-    #mapaDataInfo > ul > li#dias:before         { content: "dias: "; }
-    #mapaDataInfo > ul > li#trintaDias:before   { content: "trintaDias: "; }
-    #mapaDataInfo > ul > li#anos:before         { content: "anos: "; }
+    #mapaDataInfo > h4, #mapaDataInfo > ul{
+        margin-bottom: 8px;
+    }
+
+    #mapaDataInfo > ul > li#segundos:before     { content: "seconds: "; }
+    #mapaDataInfo > ul > li#minutos:before      { content: "minutes: "; }
+    #mapaDataInfo > ul > li#horas:before        { content: "hours: "; }
+    #mapaDataInfo > ul > li#dias:before         { content: "days: "; }
+    #mapaDataInfo > ul > li#trintaDias:before   { content: "months (30days): "; }
+    #mapaDataInfo > ul > li#anos:before         { content: "years: "; }
+
+    #msshape:before{ content: "most seen shape: "; }
