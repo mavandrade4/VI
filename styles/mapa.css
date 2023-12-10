@@ -53,7 +53,7 @@ svg#mapa g.piecharts > g.nenhum > circle{
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 #mapaDataInfo{
     position: absolute;
-    background-color: aquamarine;
+    background-color: black;
 
     padding: 8px;
     opacity: 0;
