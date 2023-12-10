@@ -70,11 +70,11 @@ svg#mapa g.piecharts > g.nenhum > circle{
         margin-bottom: 8px;
     }
 
-    #mapaDataInfo > ul > li#segundos:before     { content: "seconds: "; }
-    #mapaDataInfo > ul > li#minutos:before      { content: "minutes: "; }
-    #mapaDataInfo > ul > li#horas:before        { content: "hours: "; }
-    #mapaDataInfo > ul > li#dias:before         { content: "days: "; }
-    #mapaDataInfo > ul > li#trintaDias:before   { content: "months (30days): "; }
-    #mapaDataInfo > ul > li#anos:before         { content: "years: "; }
-
+    #mapaDataInfo > ul > li.segundos:before     { content: "seconds: "; color: #3CCDFA; }
+    #mapaDataInfo > ul > li.minutos:before      { content: "minutes: "; color: var(--verde); }
+    #mapaDataInfo > ul > li.horas:before        { content: "hours: "; color: #8C85FA; }
+    #mapaDataInfo > ul > li.dias:before         { content: "days: "; color: #EB6B9B; }
+    #mapaDataInfo > ul > li.trintaDias:before   { content: "months (30days): "; color: #71E39B; }
+    #mapaDataInfo > ul > li.anos:before         { content: "years: "; color: #DC3CFA; }
+    
     #msshape:before{ content: "most seen shape: "; }

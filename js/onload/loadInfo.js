@@ -338,7 +338,7 @@ const createMap = (template) => {
       
       /* node.append("text").text(d => d.mostShapeGroup) */
       node.append("image")
-          .attr('xlink:href', d => `./shapes/${getImageByShapeGroup(d.mostShapeGroup, 1)}`)
+          .attr('xlink:href', d => `${getImageByShapeGroup(d.mostShapeGroup, 1)}`)
           .attr('width', d => radius(d.appears))
           .attr('x', d => -radius(d.appears)*0.5)
           .attr('y', d => -radius(d.appears)*0.5)

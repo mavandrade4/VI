@@ -42,6 +42,16 @@ li{
 #loadingScreen{
     background-color: black;
 }
+    #loadingScreen > div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #loadingScreen > div > img{
+        aspect-ratio: 1 / 1;
+        max-width: 10dvh;
+        margin-bottom: 3em;
+    }
 
 #divSlider{
     position: absolute;

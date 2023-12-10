@@ -139,7 +139,7 @@ const getImageByShapeGroup = (shapeGroup, version) => {
             break;
         }
 
-    return 'Shape_' + string + ((version === 2) ? version : '') + '.svg'
+    return './imgs/shapes//Shape_' + string + ((version === 2) ? version : '') + '.svg'
 }
 
 /*
@@ -174,9 +174,14 @@ const setDOMforData = () => {
 }
 
 const loadingFun = {
-    add: () => d3.select('body').append('div').attr('id','loadingScreen')
-                    .classed('viewport', true).classed('centrado_absolute', true)
-                    .append('h2').html('ecrã de loading(seria giro ter um UFO a girar aqui)')
-                        .classed('centrado_absolute', true),
+    add: () => {
+        const LSdiv = d3.select('body').append('div').attr('id','loadingScreen')
+                        .classed('viewport', true).classed('centrado_absolute', true)
+                        .append('div')
+                            .classed('centrado_absolute', true)
+
+        LSdiv.append('img').attr('alt', '').attr('src', './imgs/loading.gif')
+        LSdiv.append('h2').html('ecrã de loading(seria giro ter um UFO a girar aqui)')
+    },
     remove: () => loadingScreen.remove()
 }
