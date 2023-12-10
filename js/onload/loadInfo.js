@@ -35,12 +35,6 @@ let TOPOJSON_COUNTRIES
       }
     }
 
-    /*
-      Cores relativas a cada porção do Pie Chart de cada país
-      [segundos, minutos, horas, dias, trintaDias, anos]
-    */
-    const coresPie = ["#ff0000", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#000000"]
-
     let template
 
 /*
@@ -56,52 +50,55 @@ let TOPOJSON_COUNTRIES
 */
 
 /* função para carregar as informações */
-const loadInfo = (after) => {
-  d3.json(
-  "https://raw.githubusercontent.com/neocarto/resources/master/geometries/World/world_countries.topojson"
-  )
-  .then(
-    (world) => {
-            // 1. Data import & handling
-            ///////////////////////////////////////////////////////
-      TOPOJSON_COUNTRIES = topojson.feature(world, world.objects.world_countries_data)
+const loadInfo = async (onStart) => {
+  onStart()
 
-                setNewData()
-      
-      /* template do mapa (servirá só para debugs) */
-      template = (selection) => {
-        selection
-          .append("g")
-          .append("path")
-          .datum(sphere)
-          .attr("class", "graticuleOutline")
-          .attr("d", path)
-          .style("fill", "#9ACBE3");
-      
-        selection
-          .append("g")
-          .append("path")
-          .datum(d3.geoGraticule10())
-          .attr("class", "graticule")
-          .attr("d", path)
-          .attr("clip-path", "url(#clip)")
-          .style("fill", "none")
-          .style("stroke", "white")
-          .style("stroke-width", 0.8)
-          .style("stroke-opacity", 0.5)
-          .style("stroke-dasharray", 2);
-      
-        selection
-          .append("path")
-          .datum(TOPOJSON_COUNTRIES)
-          .attr("fill", "#e0daa2")
-          .attr("stroke", "#737270")
-          .attr("stroke-width", 0.1)
-          .attr("d", path);
+  return (
+    d3.json(
+      "https://raw.githubusercontent.com/neocarto/resources/master/geometries/World/world_countries.topojson"
+    )
+    .then(
+      (world) => {
+              // 1. Data import & handling
+              ///////////////////////////////////////////////////////
+        TOPOJSON_COUNTRIES = topojson.feature(world, world.objects.world_countries_data)
+
+                  setNewData()
+        
+        /* template do mapa (servirá só para debugs) */
+        template = (selection) => {
+          selection
+            .append("g")
+            .append("path")
+            .datum(sphere)
+            .attr("class", "graticuleOutline")
+            .attr("d", path)
+            .style("fill", "#9ACBE3");
+        
+          selection
+            .append("g")
+            .append("path")
+            .datum(d3.geoGraticule10())
+            .attr("class", "graticule")
+            .attr("d", path)
+            .attr("clip-path", "url(#clip)")
+            .style("fill", "none")
+            .style("stroke", "white")
+            .style("stroke-width", 0.8)
+            .style("stroke-opacity", 0.5)
+            .style("stroke-dasharray", 2);
+        
+          selection
+            .append("path")
+            .datum(TOPOJSON_COUNTRIES)
+            .attr("fill", "#e0daa2")
+            .attr("stroke", "#737270")
+            .attr("stroke-width", 0.1)
+            .attr("d", path);
+        }
+
       }
-
-      after(template)
-    }
+    )
   )
 }
 
@@ -163,7 +160,7 @@ const setNewData = () => {
 // 2. Demeres Cartogram (quads)
 //////////////////////////////////////////////////////
 const createMap = (template) => {
-  container.innerHTML = ''
+  clearDOM(container)
 
 
   const size = d3.scalePow(
@@ -334,7 +331,7 @@ const createMap = (template) => {
             const arco = d3.arc().innerRadius(0).outerRadius(radius(data1[indexes].appears))
             return arco(d)
           })
-          .attr("fill", (d, i) => coresPie[i])
+          .attr("class", (d, i) => classPie[i])
 
       node.filter(d => d.appears === 0)
           .selectAll("path").remove()
@@ -402,14 +399,3 @@ const createMap = (template) => {
 
     container.append(test_svg.node())
 }
-
-addOnLoad(
-  loadDadosTratados(
-    () => {
-      loadInfo(() => {
-        createMap(template)
-        doSlider()
-      })
-    }
-  )
-)

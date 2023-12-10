@@ -59,9 +59,10 @@ const setDadosAtuais = () => {
 /* ====================
     dar load aos dados tratados
 */
-const loadDadosTratados = (after) => {
-    
+const loadDadosTratados = async (onStart) => {
+  onStart()
 
+  return (
     d3.csv("../../data/dados_tratados.csv")
       .then((ufo_data) => {
         dataTotal = ufo_data
@@ -91,7 +92,6 @@ const loadDadosTratados = (after) => {
 
         setDadosAtuais()
 
-        /* função efetuada depois de se carregarem os dados */
-        after()
     })
+  )
 }

@@ -1,19 +1,35 @@
 *{
     margin: 0;
     padding: 0;
+    color: white;
+}
+
+html{
+    background-color: var(--background);
 }
 
 html, body{
     overflow: hidden;
-    font-family: sans-serif;
+    font-family: 'Rethink Sans', sans-serif;
 }
+
+h1{ font-size: 7em; font-weight: 800; }
+
+h4{ font-size: 1.15em; }
+
+h5{ font-size: 0.95em; }
 
 ul{
     list-style: none;
 }
 
 li{
-    font-size: small;
+    font-size: 0.85em;
+}
+
+.viewport{
+    width: 100dvw;
+    height: 100dvh;
 }
 
 .centrado_absolute{
@@ -21,6 +37,10 @@ li{
     top: 50%;
     left: 50%;
     translate: -50% -50%;
+}
+
+#loadingScreen{
+    background-color: black;
 }
 
 #divSlider{
@@ -40,19 +60,18 @@ li{
     width: 100%;
 }
 
-    #divSlider > ul {
+    #labelAnos {
         list-style: none;
         display: flex;
         height: 10px;
     }
 
-    #divSlider > ul > li{
-        outline: white solid 1px;
+    #labelAnos > li{
         flex-grow: 1;
         position: relative;
     }
 
-    #divSlider > ul > li > span{
+    #labelAnos > li > span{
         writing-mode: vertical-rl;
         text-orientation: mixed;
         translate: -50% -80%;
@@ -61,13 +80,52 @@ li{
 
         position: absolute;
         left: 50%;
+
+        opacity: 0.8;
+
+        scale: 1.1;
+        transform-origin: bottom center;
     }
 
-    #divSlider > ul > li > span.onit{
+    #labelAnos > li:has(span.onit){ z-index: 1; }
+
+    #labelAnos > li > span.onit{
         font-weight: 700;
+        scale: 1.5;
         font-size: 90%;
+        color: var(--verde);
+        box-shadow: 0 0 50px 50px var(--background);
     }
 
-    #divSlider > ul > li > span.notexist{
+    #labelAnos > li > span.notexist{
         opacity: 0.2;
     }
+
+    
+    
+    
+    #sliderAnos{
+        z-index: 1;
+        appearance: none;
+    }
+
+        #sliderAnos::-webkit-slider-runnable-track{
+            height: 24px;
+            /* background linear gradient definido em doSlider.js */
+            outline: none;
+            background-color: rgba(166, 250, 60, 0.05)
+        }
+        #sliderAnos::-moz-range-track{
+            height: 100px;
+            background-color: red;
+        }
+
+        #sliderAnos::-webkit-slider-thumb{
+            appearance: none;   
+            height: 24px;
+            width: 12px;
+            background-color: white;
+        }
+        #sliderAnos::-moz-range-thumb{
+            height: 24px;
+        }

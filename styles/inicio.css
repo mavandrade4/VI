@@ -1,0 +1,18 @@
+#inicioTexto{
+    text-align: center;
+    text-wrap: nowrap;
+}
+    #inicioTexto > p{ font-size: 1.2em; }
+
+    #toDOMforData{
+        margin-top: 2em;
+        font-size: 1.2em;
+        background-color: var(--verde);
+        color: black;
+        border: none;
+        padding: 0.75em;
+    }
+    #toDOMforData:hover{
+        cursor: pointer;
+        filter: brightness(0.8);
+    }

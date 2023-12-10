@@ -93,6 +93,10 @@ const getImageByShapeGroup = (shapeGroup, version) => {
         case 'crescent':
             string = 'Cresc';
             break;
+
+        case 'cross':
+            string = 'Cross';
+            break;
         
         case 'triangle':
             string = 'tria';
@@ -110,9 +114,9 @@ const getImageByShapeGroup = (shapeGroup, version) => {
             string = 'oval';
             break;
 
-                case 'circle of light':
-                    string = 'oval';
-                    break;
+        case 'circle of light':
+            string = 'circ';
+            break;
         
         case 'formation':
             string = 'formation';
@@ -136,4 +140,43 @@ const getImageByShapeGroup = (shapeGroup, version) => {
         }
 
     return 'Shape_' + string + ((version === 2) ? version : '') + '.svg'
+}
+
+/*
+    Classes relativas a cada porção do Pie Chart de cada país
+    [segundos, minutos, horas, dias, trintaDias, anos]
+*/
+const classPie = ["segundos", "minutos", "horas", "dias", "trintaDias", "anos"]
+
+const createMapaDataInfo = (selection) => {
+    const mapaDataInfo = selection.append('div').attr('id', 'mapaDataInfo')
+
+    mapaDataInfo.append('h4')
+    mapaDataInfo.append('h5').style('margin-bottom', '4px')
+
+    mapaDataInfo.append('ul')
+                .selectAll('li')
+                .data(classPie).enter()
+                .append('li')
+                    .attr('class', d => d)
+
+    mapaDataInfo.append('h5').attr('id', 'msshape')
+}
+
+const clearDOM = (selection) => selection.innerHTML = ''
+
+const setDOMforData = () => {
+    d3.select('body').append('div').attr('id','container')
+    
+    const divSlider = d3.select('body').append('div').attr('id','divSlider')
+    divSlider.append('ol').attr('id', 'labelAnos')
+    divSlider.append('input').attr('type', 'range').attr('id', 'sliderAnos')
+}
+
+const loadingFun = {
+    add: () => d3.select('body').append('div').attr('id','loadingScreen')
+                    .classed('viewport', true).classed('centrado_absolute', true)
+                    .append('h2').html('ecrã de loading(seria giro ter um UFO a girar aqui)')
+                        .classed('centrado_absolute', true),
+    remove: () => loadingScreen.remove()
 }
