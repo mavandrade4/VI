@@ -1,0 +1,15 @@
+.UFO{
+    position: absolute;
+}
+    .UFO, .UFO > object{
+        height: auto;
+    }
+
+    .UFO > object{
+        position: absolute;
+        width: 100%;
+    }
+
+    .UFO > .ovni_raio{
+        
+    }

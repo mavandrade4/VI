@@ -163,10 +163,10 @@ const createMap = (template) => {
   clearDOM(container)
 
 
-  const size = d3.scalePow(
+  /* const size = d3.scalePow(
     [0, d3.max(TOPOJSON_COUNTRIES.features, (d) => d.properties.UFOAppears)],
     [7, k * 1.77]
-  ).exponent(0.3)
+  ).exponent(0.3) */
 
   
   

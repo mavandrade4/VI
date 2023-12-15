@@ -1,3 +1,9 @@
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// objeto com listagem de funções utilizadas para obter um certo dado de um datetime (proveniente do .csv)
 const funcoesDateTime = {
     data: (datetime) => {
         const indexOf_espaco = datetime.indexOf(' ')
@@ -46,13 +52,12 @@ const funcoesDateTime = {
         }
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// função executada no load da window
+const addOnLoad = (fun) => window.addEventListener('load', fun)
 
-
-
-const addOnLoad = (fun) => {
-    return window.addEventListener('load', fun)
-}
-
+////////////////////////////////////////////////////////////////////////////////////////////
+// moda de um array
 const moda = array => 
   Object.values(
     array.reduce((count, elemento) => {
@@ -66,6 +71,8 @@ const moda = array =>
   ).reduce((array, value) => value[0] < array[0] ? array : value, [0, null])[1];
 ;
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// filtragem da shapegroup para imagem (a imagem associada)
 const getImageByShapeGroup = (shapeGroup, version) => {
     let string = ''
 
@@ -148,6 +155,8 @@ const getImageByShapeGroup = (shapeGroup, version) => {
 */
 const classPie = ["segundos", "minutos", "horas", "dias", "trintaDias", "anos"]
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// div #mapaDataInfo (informa ao dar hover)
 const createMapaDataInfo = (selection) => {
     const mapaDataInfo = selection.append('div').attr('id', 'mapaDataInfo')
 
@@ -163,8 +172,12 @@ const createMapaDataInfo = (selection) => {
     mapaDataInfo.append('h5').attr('id', 'msshape')
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// dar clear a um DOM
 const clearDOM = (selection) => selection.innerHTML = ''
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// div #container (adicionado pós incialização "da app")
 const setDOMforData = () => {
     d3.select('body').append('div').attr('id','container')
     
@@ -173,6 +186,8 @@ const setDOMforData = () => {
     divSlider.append('input').attr('type', 'range').attr('id', 'sliderAnos')
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// div #loadingScreen
 const loadingFun = {
     add: () => {
         const LSdiv = d3.select('body').append('div').attr('id','loadingScreen')
@@ -185,3 +200,55 @@ const loadingFun = {
     },
     remove: () => loadingScreen.remove()
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// div .UFO
+const animatedUFO = (selection, width, vaca) => {
+    const UFOdiv = selection.append('div').attr('class', 'UFO').style('width', `${width}px`)
+
+
+    UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/Loading_raio.svg').attr('class', 'ovni_raio')
+    if(vaca) UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/vaca.svg')
+    UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/Loading_OVNI.svg').attr('class', 'ovni')
+}
+
+    const counterLimit = 60 * 4
+    const delayStarts = {
+        bottom: 30,
+        top: counterLimit - 30
+    }
+    let direction = 1
+    const animateRaioOVNI = (timestamp) => {
+        const ovni_raioOBJECT = document.querySelector('.UFO > .ovni_raio')
+        const ovni_raio = ovni_raioOBJECT.contentWindow.document.querySelector('svg > polygon')
+
+        if(ovni_raio !== null){
+            let count = ovni_raio.getAttribute('count')
+
+            if(count === null) ovni_raio.setAttribute('count', 0)
+            else{
+                count = parseInt(count)
+                if(count <= 0 && direction === -1 || (count >= counterLimit && direction === 1)) direction *= -1
+
+                const pointsAttr = ovni_raio.getAttribute('points')
+                const points = pointsAttr.split(' ')
+                const pointsToArray = points.map((item, index) => {
+                    if(index < 3){
+                        const spliter = item.split(',')
+                        return {
+                            x: parseInt(spliter[0]),
+                            y: parseInt(spliter[1])
+                        }
+                    }
+                    else return null
+                })
+
+                /* const escala = d3.scaleLinear([0, counterLimit], [1920, 0]) */
+                console.log(`${points[0]} ${pointsToArray[1].x},${pointsToArray[1].y} ${pointsToArray[2].x},${pointsToArray[2].y}`)
+
+                ovni_raio.setAttribute('count', count + 1 * direction)
+            }
+        }
+
+        requestAnimationFrame(animateRaioOVNI)
+    }

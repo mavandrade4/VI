@@ -8,6 +8,11 @@ const setInicio = () => {
     inicioTexto.append('h1').html('UFO SUSPICIOUS SIGHTS')
     inicioTexto.append('p').html('explore UFO sightings reported by people in a questionable state of existence (we think)')
 
+    animatedUFO(d3.select('body'), 200)
+    animateRaioOVNI()
+
+
+    /* botão que direciona */
     inicioTexto.append('button')
           .attr('id','toDOMforData')
           .html('EXPLORE NOW!')
@@ -34,3 +39,4 @@ const setInicio = () => {
 }
 
 addOnLoad(setInicio)
+
