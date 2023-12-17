@@ -2,6 +2,7 @@ svg#mapa{
     scale: 1.5;
 }
 
+
 svg#mapa g.piecharts > g > *{ stroke: none; }
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 svg#mapa g.piecharts > g:not(.nenhum) > *{ transition: 150ms scale; }
@@ -18,18 +19,54 @@ svg#mapa g.piecharts > g:not(.nenhum) > *{ transition: 150ms scale; }
 
 
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
-svg#mapa g.piecharts > g:not(.nenhum).over > *{ scale: 1.05; }
+svg#mapa g.piecharts > g:not(.nenhum):focus > * {
+    animation: animationOnFocus 1000ms infinite ease-in-out;
+}
+svg#mapa g.piecharts > g:not(.nenhum).over > * {
+    animation: none;
+    scale: 1.05;
+}
+
+    svg#mapa g.piecharts > g:not(.nenhum):focus > circle{
+        stroke: rgba(255, 255, 255, 0.6);
+        animation: animationOnFocusForCircle 1000ms infinite ease-in-out;
+    }
 
     svg#mapa g.piecharts > g:not(.nenhum).over > circle{
+        animation: none;
         stroke: rgba(255, 255, 255, 0.6);
         stroke-width: 3;
         filter: blur(4px);
     }
 
-    svg#mapa:has(.over) g.piecharts > g:not(.nenhum):not(.over) > *{
+    svg#mapa:has(.over) g.piecharts > g:not(.nenhum):not(.over) > *,
+    svg#mapa:has(g:not(.nenhum):focus) g.piecharts > g:not(.nenhum):not(.over):not(:focus) > *{
         filter: brightness(0.8);
         scale: 0.75;
     }
+
+    svg#mapa g.piecharts > g:not(.nenhum):focus{
+        outline: none;
+    }
+
+    @keyframes animationOnFocus {
+        0%, 100%{ scale: 1 }
+        50%{ scale: 1.1 }
+    }
+
+    @keyframes animationOnFocusForCircle {
+        from{
+            opacity: 1;
+            stroke-width: 0;
+            filter: blur(0px);
+        }
+        to{
+            opacity: 0;
+            stroke-width: 10;
+            filter: blur(16px);
+        }
+    }
+
 
 
 
@@ -77,4 +114,28 @@ svg#mapa g.piecharts > g.nenhum > circle{
     #mapaDataInfo > ul > li.trintaDias:before   { content: "months (30days): "; color: #71E39B; }
     #mapaDataInfo > ul > li.anos:before         { content: "years: "; color: #DC3CFA; }
     
-    #msshape:before{ content: "most seen shape: "; }
+        #msshape:before{ content: "most seen shape: "; }
+
+/**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+#mapaDataClick{
+    position: absolute;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 50px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 100dvh;
+    width: 25%;
+    max-width: 500px;
+    min-width: 300px;
+
+    z-index: 10;
+
+    translate: 100% 0;
+    transition: translate 200ms;
+}
+    #mapaDataClick.show{
+        translate: 0 0;
+    }

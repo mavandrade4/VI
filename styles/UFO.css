@@ -13,3 +13,9 @@
     .UFO > .ovni_raio{
         
     }
+
+    .UFO > .ovni_vaca{
+        transform-origin: top center;
+        box-sizing: border-box;
+        padding: 0 20%;
+    }

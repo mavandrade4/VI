@@ -57,18 +57,22 @@ const funcoesDateTime = {
 const addOnLoad = (fun) => window.addEventListener('load', fun)
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+// contador de um array
+const contador = array => 
+    Object.values(
+    array.reduce((count, elemento) => {
+        if (!(elemento in count)) {
+        count[elemento] = [0, elemento];
+        }
+        
+        count[elemento][0]++;
+        return count;
+    }, {})
+    )
+////////////////////////////////////////////////////////////////////////////////////////////
 // moda de um array
 const moda = array => 
-  Object.values(
-    array.reduce((count, elemento) => {
-      if (!(elemento in count)) {
-        count[elemento] = [0, elemento];
-      }
-      
-      count[elemento][0]++;
-      return count;
-    }, {})
-  ).reduce((array, value) => value[0] < array[0] ? array : value, [0, null])[1];
+    contador(array).reduce((array, value) => value[0] < array[0] ? array : value, [0, null])[1];
 ;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -146,7 +150,7 @@ const getImageByShapeGroup = (shapeGroup, version) => {
             break;
         }
 
-    return './imgs/shapes//Shape_' + string + ((version === 2) ? version : '') + '.svg'
+    return './imgs/shapes/Shape_' + string + ((version === 2) ? version : '') + '.svg'
 }
 
 /*
@@ -173,6 +177,14 @@ const createMapaDataInfo = (selection) => {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+// div #mapaDataClick (informa ao dar click)
+const createMapaDataClick = (selection) => {
+    const mapaDataClick = selection.append('div').attr('id', 'mapaDataClick')
+
+    mapaDataClick.append('div').attr('id', 'radarShapeData')
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
 // dar clear a um DOM
 const clearDOM = (selection) => selection.innerHTML = ''
 
@@ -190,39 +202,90 @@ const setDOMforData = () => {
 // div #loadingScreen
 const loadingFun = {
     add: () => {
-        const LSdiv = d3.select('body').append('div').attr('id','loadingScreen')
+        const LS = d3.select('body').append('div').attr('id','loadingScreen')
                         .classed('viewport', true).classed('centrado_absolute', true)
-                        .append('div')
-                            .classed('centrado_absolute', true)
 
-        LSdiv.append('img').attr('alt', '').attr('src', './imgs/loading.gif')
-        LSdiv.append('h2').html('ecrã de loading(seria giro ter um UFO a girar aqui)')
+
+        counterLimit = 45
+        delayStarts = {
+            bottom: 10,
+            top: counterLimit
+        }
+        setAnimatedUFO(LS, 200, true)
+        LS.append('h2').html('we are loading the content')
+
+        animateRaioOVNI()
     },
-    remove: () => loadingScreen.remove()
+    remove: () => {
+        cancelAnimationFrame(animateRaioOVNI)
+        loadingScreen.remove()
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // div .UFO
-const animatedUFO = (selection, width, vaca) => {
+let UFOloadings = {
+    raio: false,
+    vaca: false,
+    ovni: false
+}
+const resetUFOLoadings = () => {
+    UFOloadings = {
+        raio: false,
+        vaca: false,
+        ovni: false
+    }
+}
+const setAnimatedUFO = (selection, width, vaca) => {
+    resetUFOLoadings()
     const UFOdiv = selection.append('div').attr('class', 'UFO').style('width', `${width}px`)
 
-
     UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/Loading_raio.svg').attr('class', 'ovni_raio')
-    if(vaca) UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/vaca.svg')
+            .on('load', (e) => {
+                UFOloadings.raio = true
+                if(UFOloadings.vaca) setVacaPosition()
+            })
+    if(vaca){
+        UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/vaca.svg').attr('class', 'ovni_vaca')
+                .on('load', (e) => {
+                    UFOloadings.vaca = true
+                    if(UFOloadings.raio) setVacaPosition()
+                })
+    }
     UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/Loading_OVNI.svg').attr('class', 'ovni')
-}
+            .on('load', (e) => {UFOloadings.ovni = true})
 
-    const counterLimit = 60 * 4
-    const delayStarts = {
-        bottom: 30,
-        top: counterLimit - 30
+    return UFOdiv
+}
+                            ////////////////////////
+                            ////////////////////////
+    const setVacaPosition = () => {
+        const ovni_raioOBJECT = document.querySelector('.UFO > .ovni_raio')
+        const ovni_raio = ovni_raioOBJECT.contentWindow.document.querySelector('svg > polygon')
+        const ovni_vacaOBJECT = document.querySelector('.UFO > .ovni_vaca')
+
+        const bounds = {
+            ovni_vaca: ovni_vacaOBJECT.getBoundingClientRect(),
+            ovni_raio: ovni_raio.getBoundingClientRect()
+        }
+        ovni_vacaOBJECT.style.translate = `0 ${bounds.ovni_raio.height - bounds.ovni_vaca.height}px`
+    }
+    ////////////////
+    // animar UFO
+    let counterLimit = -1
+    let delayStarts = {
+        bottom: -1,
+        top: -1
     }
     let direction = 1
+                            ////////////////////////
+                            ////////////////////////
     const animateRaioOVNI = (timestamp) => {
         const ovni_raioOBJECT = document.querySelector('.UFO > .ovni_raio')
         const ovni_raio = ovni_raioOBJECT.contentWindow.document.querySelector('svg > polygon')
+        const ovni_vacaOBJECT = document.querySelector('.UFO > .ovni_vaca')
 
-        if(ovni_raio !== null){
+        if(UFOloadings.raio){
             let count = ovni_raio.getAttribute('count')
 
             if(count === null) ovni_raio.setAttribute('count', 0)
@@ -230,21 +293,30 @@ const animatedUFO = (selection, width, vaca) => {
                 count = parseInt(count)
                 if(count <= 0 && direction === -1 || (count >= counterLimit && direction === 1)) direction *= -1
 
-                const pointsAttr = ovni_raio.getAttribute('points')
-                const points = pointsAttr.split(' ')
-                const pointsToArray = points.map((item, index) => {
-                    if(index < 3){
-                        const spliter = item.split(',')
-                        return {
-                            x: parseInt(spliter[0]),
-                            y: parseInt(spliter[1])
-                        }
-                    }
-                    else return null
-                })
+                ////////////////
+                // definir coords dos pontos laterais (do raio)
+                const pY =  d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1920, 0])
+                const pX1 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [0, 540])
+                const pX2 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1080, 540])
 
-                /* const escala = d3.scaleLinear([0, counterLimit], [1920, 0]) */
-                console.log(`${points[0]} ${pointsToArray[1].x},${pointsToArray[1].y} ${pointsToArray[2].x},${pointsToArray[2].y}`)
+                ////////////////
+                // Função de animar através do 'count' (variavel q muda a cada iteração (quase como um frameCount))
+                const doIAnimateByCount = () => (count < delayStarts.bottom || count > delayStarts.top) ? false : true
+
+                if(doIAnimateByCount()){
+                    ovni_raio.setAttribute(
+                        'points',
+                        `540,0 
+                        ${pX1(count)},${pY(count)} 
+                        ${pX2(count)},${pY(count)}`
+                    )
+
+                    if(UFOloadings.vaca){
+                        const scaleVaca = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1, 0])
+                        ovni_vacaOBJECT.style.scale = scaleVaca(count)
+                        setVacaPosition()
+                    }
+                }
 
                 ovni_raio.setAttribute('count', count + 1 * direction)
             }

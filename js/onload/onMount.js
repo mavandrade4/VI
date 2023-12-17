@@ -8,7 +8,12 @@ const setInicio = () => {
     inicioTexto.append('h1').html('UFO SUSPICIOUS SIGHTS')
     inicioTexto.append('p').html('explore UFO sightings reported by people in a questionable state of existence (we think)')
 
-    animatedUFO(d3.select('body'), 200)
+    counterLimit = 60 * 4
+    delayStarts = {
+        bottom: 150,
+        top: counterLimit - 30
+    }
+    setAnimatedUFO(d3.select('body'), 200, false)
     animateRaioOVNI()
 
 
@@ -17,6 +22,7 @@ const setInicio = () => {
           .attr('id','toDOMforData')
           .html('EXPLORE NOW!')
           .on('click', (e) => {
+            cancelAnimationFrame(animateRaioOVNI)
             //dar clear ao body
             clearDOM(document.body)
 
@@ -24,6 +30,7 @@ const setInicio = () => {
             setDOMforData()
 
             d3.select('body').call(createMapaDataInfo)
+            d3.select('body').call(createMapaDataClick)
             loadDadosTratados(loadingFun.add)
                 .then(
                     () => loadInfo(() => {})
@@ -31,7 +38,7 @@ const setInicio = () => {
                                 () =>{
                                     createMap(template)
                                     doSlider()
-                                    loadingFun.remove()
+                                    setTimeout(() => loadingFun.remove(), 2000)
                                 }
                             )
                 )
