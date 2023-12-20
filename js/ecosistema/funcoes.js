@@ -72,83 +72,65 @@ const contador = array =>
 ////////////////////////////////////////////////////////////////////////////////////////////
 // moda de um array
 const moda = array => 
-    contador(array).reduce((array, value) => value[0] < array[0] ? array : value, [0, null])[1];
-;
+    contador(array).reduce((array, value) => value[0] < array[0] ? array : value, [0, null])[1]
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+// Todas as shapeGroups disponiveis
+const allShapeGroups = [
+    'other',
+    'V shape',
+    'cylinder',
+    'round',
+    'cone',
+    'crescent',
+    'cross',
+    'triangle',
+    'diamond',
+    'ellipse',
+    'oval',
+    'circle of light',
+    'formation',
+    'hexagon',
+    'pyramid',
+    'rectangle',
+    'teardrop'
+]
+
+const allReturnImageShapeGroup = [
+    'unk',
+    'v',
+    'cyl',
+    'oval',
+    'cone',
+    'Cresc',
+    'Cross',
+    'tria',
+    'dimon',
+    'oval',
+    'oval',
+    'circ',
+    'formation',
+    'Hex',
+    'pyra',
+    'rect',
+    'tear'
+]
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // filtragem da shapegroup para imagem (a imagem associada)
 const getImageByShapeGroup = (shapeGroup, version) => {
     let string = ''
 
-    switch(shapeGroup){
-        case 'other':
-            string = 'unk';
-            break;
-        
-        case 'V shape':
-            string = 'v';
-            break;
-        
-        case 'cylinder':
-            string = 'cyl';
-            break;
-
-                case 'round':
-                    string = 'oval';
-                    break;
-        
-        case 'cone':
-            string = 'cone';
-            break;
-
-        case 'crescent':
-            string = 'Cresc';
-            break;
-
-        case 'cross':
-            string = 'Cross';
-            break;
-        
-        case 'triangle':
-            string = 'tria';
-            break;
-        
-        case 'diamond':
-            string = 'dimon';
-            break;
-
-                case 'ellipse':
-                    string = 'oval';
-                    break;
-        
-        case 'oval':
-            string = 'oval';
-            break;
-
-        case 'circle of light':
-            string = 'circ';
-            break;
-        
-        case 'formation':
-            string = 'formation';
-            break;
-
-        case 'hexagon':
-            string = 'Hex';
-            break;
-        
-        case 'pyramid':
-            string = 'pyra';
-            break;
-
-        case 'rectangle':
-            string = 'rect';
-            break;
-
-        case 'teardrop':
-            string = 'tear';
-            break;
+    allShapeGroups.forEach(
+        (sg, index) => {
+            if(shapeGroup === sg){
+                string = allReturnImageShapeGroup[index]
+                return
+            }
         }
+    )
 
     return './imgs/shapes/Shape_' + string + ((version === 2) ? version : '') + '.svg'
 }
@@ -182,6 +164,14 @@ const createMapaDataClick = (selection) => {
     const mapaDataClick = selection.append('div').attr('id', 'mapaDataClick')
 
     mapaDataClick.append('div').attr('id', 'radarShapeData')
+
+
+    mapaDataClick.append('div').attr('id', 'radarFiltragem')
+                 .append('form')
+                 .selectAll('label')
+                 .data(allShapeGroups).enter()
+                 .append("text").text(d => d)
+                 .append('input').attr('type', 'checkbox')
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

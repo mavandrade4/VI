@@ -150,6 +150,7 @@ const createMap = (template) => {
                         left:${(e.clientX < window.innerWidth*0.5) ? (e.clientX + 20) : (e.clientX - 20 - mapaDataInfo.clientWidth)}px;`)
               })
               .on('focus', (e, d) => {
+                console.log('teste')
                 d3.select(mapaDataClick).classed('show', true)
 
                 clearDOM(radarShapeData)
@@ -160,6 +161,15 @@ const createMap = (template) => {
               })
               .on('blur', (e) => {
                 d3.select(mapaDataClick).classed('show', false)
+                const bounds = mapaDataClick.getBoundingClientRect()
+
+                if(
+                    posicaoRato.x > bounds.left && posicaoRato.x < bounds.right
+                    &&
+                    posicaoRato.y > bounds.top && posicaoRato.y < bounds.bottom
+                ){
+                    e.currentTarget.focus()
+                }
               })
         
             node.append("circle")

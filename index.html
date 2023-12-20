@@ -30,7 +30,14 @@
       <!-- TopoJSON -->
       <script src="https://unpkg.com/topojson@3"></script>
     
-
+      <script>
+        let posicaoRato = {
+          x: -1,
+          y: -1
+        }
+    
+        d3.select(document).on('mousedown', (e) => posicaoRato = { x: e.screenX, y: e.screenY })
+      </script>
       <!-- Locals -->
         <!-- script com funcoes "globais" -->
           <script src="./js/ecosistema/funcoes.js"></script>
@@ -55,5 +62,4 @@
   
   <body>
   </body>
-  
 </html>

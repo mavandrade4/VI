@@ -20,6 +20,16 @@
     //////////////////////////////////////////////////////////////
     ////////////////////////// Data //////////////////////////////
     //////////////////////////////////////////////////////////////
+
+    let filtrosRadar = allShapeGroups
+
+    const createObjectForRadar = () => {
+        const array = []
+        filtrosRadar.forEach(
+            (shapeGroup) => array.push(createBaseForRadar([0, shapeGroup]))
+        )
+        return array
+    }
   
     const createBaseForRadar = (shapeGroupsQuantidade) => {
         return {
@@ -28,15 +38,22 @@
         }
     }
 
-    const createDadosPaisForRadar = (listaShapeGrouptsQuantidade) => {
-        let array = []
-        listaShapeGrouptsQuantidade.forEach(
-            (item) => array.push(createBaseForRadar(item))
+    const createDadosPaisForRadar = (listaShapeGroupsQuantidade) => {
+        let arrayComDados = createObjectForRadar()
+
+        listaShapeGroupsQuantidade.forEach(
+            (item) =>{
+                arrayComDados.forEach(
+                    (filtrado) => {
+                        if(item[1] === filtrado.axis) filtrado.value = item[0]
+                    }
+                )
+            }
         )
-        return array
+        return arrayComDados
     }
     var dadosPaisForRadar = [
-      [
+/*       [
         //Samsung
         { axis: "Battery Life", value: 0.27 },
         { axis: "Brand", value: 0.16 },
@@ -46,7 +63,7 @@
         { axis: "Large Screen", value: 0.13 },
         { axis: "Price Of Device", value: 0.35 },
         { axis: "To Be A Smartphone", value: 0.38 }
-      ],
+      ], */
     ];
     //////////////////////////////////////////////////////////////
     //////////////////// Draw the Chart //////////////////////////
@@ -157,13 +174,13 @@ function RadarChart(selection, data, options) {
       }), //Names of each axis
       total = allAxis.length, //The number of different axes
       radius = Math.min(cfg.w / 2, cfg.h / 2), //Radius of the outermost circle
-      Format = d3.format(".0%"), //Percentage formatting
+      Format = d3.format(".0f"), //Percentage formatting
       angleSlice = (Math.PI * 2) / total; //The width in radians of each "slice"
   
     //Scale for the radius
     var rScale = d3
       .scaleLinear()
-      .range([0, radius])
+      .range([radius / 16, radius])
       .domain([0, maxValue]);
   
     /////////////////////////////////////////////////////////
@@ -206,7 +223,8 @@ function RadarChart(selection, data, options) {
       .append("circle")
       .attr("class", "gridCircle")
       .attr("r", function(d, i) {
-        return (radius / cfg.levels) * d;
+        return ((radius - radius / 16) / cfg.levels + radius / 16) * d;
+        //mudar raio (minimo n é o centro) #vemca
       })
       .style("fill", "#CDCDCD")
       .style("stroke", "#CDCDCD")
@@ -376,6 +394,12 @@ function RadarChart(selection, data, options) {
     /////////////////////////////////////////////////////////
     //////// Append invisible circles for tooltip ///////////
     /////////////////////////////////////////////////////////
+
+    //Set up the small tooltip for when you hover over a circle
+    var tooltip = grupo
+      .append("text")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
   
     //Wrapper for the invisible circles on top
     var blobCircleWrapper = grupo
@@ -403,7 +427,7 @@ function RadarChart(selection, data, options) {
       })
       .style("fill", "none")
       .style("pointer-events", "all")
-      .on("mouseover", function(d, i) {
+      .on("mouseover", function(e, d, i) {
         var newX = parseFloat(d3.select(this).attr("cx")) - 10;
         var newY = parseFloat(d3.select(this).attr("cy")) - 10;
   
@@ -421,12 +445,6 @@ function RadarChart(selection, data, options) {
           .duration(200)
           .style("opacity", 0);
       });
-  
-    //Set up the small tooltip for when you hover over a circle
-    var tooltip = grupo
-      .append("text")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
   
     return svg.node();
   } //RadarChart
