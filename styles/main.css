@@ -102,10 +102,18 @@ li{
 
     #labelAnos > li > div{
         translate: 0 -60px;
-        margin: 0 3px;
+        margin: 0 10%;
         opacity: 0.25;
         background-color: white;
         text-wrap: nowrap;
+
+        @media (max-width: 1400px) {
+            margin: 0 2px;
+        }
+
+        @media (max-width: 1200px) {
+            margin: 0 1px;
+        }
     }
 
         #labelAnos > li > div:hover{ opacity: 0.75;}
@@ -120,7 +128,7 @@ li{
         writing-mode: vertical-rl;
         text-orientation: mixed;
         translate: -50% 0; 
-        font-size: 70%;
+        font-size: 0.7em;
         font-weight: 500;
         position: absolute;
         left: 50%;
@@ -128,19 +136,36 @@ li{
         opacity: 0.8;
         scale: 1.1;
         transform-origin: bottom center;
+
+                @media (max-width: 1500px) {
+                    font-size: 0.6em;
+                }
+
+                @media (max-width: 1230px) {
+                    font-size: 0.5em;
+                }
     }
 
         #labelAnos > li > span.onit{
             font-weight: 700;
             scale: 1.5;
-            font-size: 90%;
+            font-size: 0.9em;
             color: var(--verde);
             
+                    @media (max-width: 1500px) {
+                        font-size: 0.7em;
+                    }
         }
 
     #labelAnos > li > span.notexist{
         opacity: 0.2;
     }
+
+            @media (max-width: 1050px) {
+                #labelAnos > li > span:not(.onit){
+                    opacity: 0;
+                }
+            }
 
     
     
