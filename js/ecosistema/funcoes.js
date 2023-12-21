@@ -162,16 +162,71 @@ const createMapaDataInfo = (selection) => {
 // div #mapaDataClick (informa ao dar click)
 const createMapaDataClick = (selection) => {
     const mapaDataClick = selection.append('div').attr('id', 'mapaDataClick')
-
+    
+    mapaDataClick.append('h2').text('Most Seen Shapes')
+    mapaDataClick.append('h3').attr('id', 'paisMapa')
     mapaDataClick.append('div').attr('id', 'radarShapeData')
+    mapaDataClick.append('h4').text('Filters')
 
 
-    mapaDataClick.append('div').attr('id', 'radarFiltragem')
-                 .append('form')
-                 .selectAll('label')
-                 .data(allShapeGroups).enter()
-                 .append("text").text(d => d)
-                 .append('input').attr('type', 'checkbox')
+    const formRadarFiltragem = mapaDataClick.append('form').attr('id', 'radarFiltragemForm')
+                                    .on('submit', (e) => {
+                                        e.preventDefault();
+                                        const target = e.currentTarget
+                                        console.log('submited')
+
+                                        const checkedCheckboxes = target.querySelectorAll('input[type="checkbox"]:checked')
+                                        const nowClicked = target.querySelector('.nowClicked')
+
+                                        if(checkedCheckboxes.length >= 3){
+                                            nowClicked.classList.remove('nowClicked')
+
+                                            let notCheckedNames = []
+                                            allShapeGroups.forEach(
+                                                shapeGroup => {
+                                                    let isChecked = false
+                                                    for(let i = 0; i < checkedCheckboxes.length; i++){
+                                                        if(shapeGroup === checkedCheckboxes[i].name){
+                                                            isChecked = true
+                                                            break
+                                                        }
+                                                    }
+                                                    if(!isChecked) notCheckedNames.push(shapeGroup)
+                                                }
+                                            )
+
+                                            filtrosRadar = allShapeGroups
+                                            filtrosRadar = filtrosRadar.filter(x => {
+                                                if(!notCheckedNames.includes(x)) return x
+                                            })
+                                            setDadosPaisForRadar()
+                                            clearDOM(radarShapeData)
+                                            d3.select(radarShapeData).call(RadarChartSelection)
+                                        }
+                                        else{
+                                            nowClicked.classList.remove('nowClicked')
+                                            nowClicked.classList.add('naoRemover')
+                                            const timeout = setTimeout(
+                                                () => {
+                                                    nowClicked.classList.remove('naoRemover')
+                                                    return clearTimeout(timeout)
+                                                }, 200
+                                            )
+                                            d3.select(nowClicked).property('checked', true)
+                                        }
+                                    })
+
+
+    formRadarFiltragem.append('button').attr('id', 'submitBtn').style('display', 'none')
+
+    const inputs = formRadarFiltragem.selectAll('label')
+                    .data(allShapeGroups).enter()
+                    .append("lable").text(d => d)
+                    .append('input').attr('type', 'checkbox').attr('name', d => d).property('checked', true)
+                    .on('input', (e) => {
+                        e.currentTarget.classList.add('nowClicked')
+                        submitBtn.click();
+                    })
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +262,6 @@ const loadingFun = {
         animateRaioOVNI()
     },
     remove: () => {
-        cancelAnimationFrame(animateRaioOVNI)
         loadingScreen.remove()
     }
 }

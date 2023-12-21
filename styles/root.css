@@ -1,4 +1,11 @@
 :root{
     --background: #151924;
+    --background-leve: #202636;
+    /* cores de pie chart e tambem mix */
     --verde: #A6FA3C;
+    --verde-2: #71E39B;
+    --azul: #3CCDFA;
+    --azul-2: #8C85FA;
+    --rosa: #DC3CFA;
+    --rosa-2: #EB6B9B;
 }

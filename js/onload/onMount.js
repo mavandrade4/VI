@@ -36,8 +36,10 @@ const setInicio = () => {
                     () => loadInfo(() => {})
                             .then(
                                 () =>{
+                                    cancelAnimationFrame(animateRaioOVNI)
                                     createMap(template)
                                     doSlider()
+                                    d3.select(document.body).append('img').attr('id', 'iconHoverShapeData').attr('alt', '').attr('src', getImageByShapeGroup('other'))
                                     setTimeout(() => loadingFun.remove(), 2000)
                                 }
                             )

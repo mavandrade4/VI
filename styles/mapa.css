@@ -7,12 +7,12 @@ svg#mapa g.piecharts > g > *{ stroke: none; }
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 svg#mapa g.piecharts > g:not(.nenhum) > *{ transition: 150ms scale; }
 
-    svg#mapa g.piecharts > g:not(.nenhum) > path.segundos   { fill: #3CCDFA; }
+    svg#mapa g.piecharts > g:not(.nenhum) > path.segundos   { fill: var(--azul); }
     svg#mapa g.piecharts > g:not(.nenhum) > path.minutos    { fill: var(--verde); }
-    svg#mapa g.piecharts > g:not(.nenhum) > path.horas      { fill: #8C85FA; }
-    svg#mapa g.piecharts > g:not(.nenhum) > path.dias       { fill: #EB6B9B; }
-    svg#mapa g.piecharts > g:not(.nenhum) > path.trintaDias { fill: #71E39B; }
-    svg#mapa g.piecharts > g:not(.nenhum) > path.anos       { fill: #DC3CFA; }
+    svg#mapa g.piecharts > g:not(.nenhum) > path.horas      { fill: var(--azul-2); }
+    svg#mapa g.piecharts > g:not(.nenhum) > path.dias       { fill: var(--rosa-2); }
+    svg#mapa g.piecharts > g:not(.nenhum) > path.trintaDias { fill: var(--verde-2); }
+    svg#mapa g.piecharts > g:not(.nenhum) > path.anos       { fill: var(--rosa); }
     
 
     svg#mapa g.piecharts > g:not(.nenhum) > circle{ fill: white; }
@@ -107,19 +107,30 @@ svg#mapa g.piecharts > g.nenhum > circle{
         margin-bottom: 8px;
     }
 
-    #mapaDataInfo > ul > li.segundos:before     { content: "seconds: "; color: #3CCDFA; }
+    #mapaDataInfo > ul > li.segundos:before     { content: "seconds: "; color: var(--azul); }
     #mapaDataInfo > ul > li.minutos:before      { content: "minutes: "; color: var(--verde); }
-    #mapaDataInfo > ul > li.horas:before        { content: "hours: "; color: #8C85FA; }
-    #mapaDataInfo > ul > li.dias:before         { content: "days: "; color: #EB6B9B; }
-    #mapaDataInfo > ul > li.trintaDias:before   { content: "months (30days): "; color: #71E39B; }
-    #mapaDataInfo > ul > li.anos:before         { content: "years: "; color: #DC3CFA; }
+    #mapaDataInfo > ul > li.horas:before        { content: "hours: "; color: var(--azul-2); }
+    #mapaDataInfo > ul > li.dias:before         { content: "days: "; color: var(--rosa-2); }
+    #mapaDataInfo > ul > li.trintaDias:before   { content: "months (30days): "; color: var(--verde-2); }
+    #mapaDataInfo > ul > li.anos:before         { content: "years: "; color: var(--rosa); }
     
         #msshape:before{ content: "most seen shape: "; }
 
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
+#iconHoverShapeData{
+    position: absolute;
+    translate: -50% -50%;
+    width: 46px;
+    height: 46px;
+    opacity: 0;
+    z-index: 100;
+    scale: 0;
+    transition: scale 200ms;
+}
+
 #mapaDataClick{
     position: absolute;
-    background-color: white;
+    background-color: var(--background-leve);
     box-shadow: rgba(0, 0, 0, 0.5) 0 0 50px;
 
     position: absolute;
@@ -135,7 +146,95 @@ svg#mapa g.piecharts > g.nenhum > circle{
 
     translate: 100% 0;
     transition: translate 200ms;
+
+    text-align: center;
 }
     #mapaDataClick.show{
         translate: 0 0;
     }
+
+    #mapaDataClick > h2{
+        margin-top: 60px;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 2.2em;
+    }
+
+    #mapaDataClick > h3{
+        color: var(--verde);
+        font-weight: 500;
+        font-size: 1.3em;
+    }
+
+    #mapaDataClick > h4{
+        margin-top: 10px;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 1.3em;
+    }
+
+    #radarShapeData{
+        position: relative;
+    }
+
+    #mapaDataClick .filtroLegenda{
+        fill: white;
+        font-size: 12px;
+        transition: opacity 200ms, font-size 200ms;
+    }
+
+    #mapaDataClick .filtroLegenda.onHover{
+        font-size: 16px;
+        opacity: 0;
+    }
+
+    #mapaDataClick .labelRaio{
+        fill: rgb(200, 200, 200);
+        font-size: 10px;
+    }
+
+    #mapaDataClick .tooltip{
+        fill: white;
+    }
+
+    #mapaDataClick .tooltipSombra{
+        filter: blur(20px);
+        stroke-width: 20px;
+        stroke: black;
+        fill: black;
+    }
+    
+    #radarFiltragemForm{
+        margin: 0 40px;
+        column-gap: 20px;
+        row-gap: 6px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    #radarFiltragemForm > lable{
+        flex-basis: calc((100% - 20px * 2) / 3);
+        font-size: 0.95em;
+        text-align: left;
+    }
+        #radarFiltragemForm > lable:has(.naoRemover){
+            animation: naoTirar 200ms linear;
+
+            color: rgb(255 29 70);
+            text-shadow: rgb(255 29 29 / 61%) 0 0 10px;
+            font-weight: 600;
+            scale: 1.1;
+            transition: color 100ms, text-shadow 100ms, scale 100ms;
+        }
+
+        @keyframes naoTirar {
+            0%, 100%{ translate: 0 0; }
+            20%, 60%{ translate: -4px 0; }
+            40%, 80%{ translate: 4px 0; }
+        }
+
+        #radarFiltragemForm > lable > input[type="checkbox"]{
+            float: right;
+        }

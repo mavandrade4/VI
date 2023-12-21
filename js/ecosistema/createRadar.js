@@ -23,6 +23,13 @@
 
     let filtrosRadar = allShapeGroups
 
+    let paisDataAtual = null
+    const setDadosPaisForRadar = () => {
+        dadosPaisForRadar = [
+            createDadosPaisForRadar(paisDataAtual)
+        ]
+    }
+
     const createObjectForRadar = () => {
         const array = []
         filtrosRadar.forEach(
@@ -69,8 +76,6 @@
     //////////////////// Draw the Chart //////////////////////////
     //////////////////////////////////////////////////////////////
   
-    var colorRadar = d3.scaleOrdinal().range(["#EDC951", "#CC333F", "#00A0B0"]);
-  
     var radarChartOptions = {
       w: w,
       h: h,
@@ -78,7 +83,6 @@
       maxValue: 0,
       levels: 4,
       roundStrokes: true,
-      color: colorRadar
     };
   
 
@@ -112,7 +116,7 @@ function RadarChart(selection, data, options) {
             .append("tspan")
             .attr("x", x)
             .attr("y", y)
-            .attr("dy", dy + "em");
+            .attr("dy", dy + "em")
   
         while ((word = words.pop())) {
           line.push(word);
@@ -138,14 +142,14 @@ function RadarChart(selection, data, options) {
       margin: { top: 20, right: 20, bottom: 20, left: 20 }, //The margins of the SVG
       levels: 3, //How many levels or inner circles should there be drawn
       maxValue: 0, //What is the value that the biggest circle will represent
-      labelFactor: 1.25, //How much farther than the radius of the outer circle should the labels be placed
+      labelFactor: 1.3, //How much farther than the radius of the outer circle should the labels be placed
       wrapWidth: 60, //The number of pixels after which a label needs to be given a new line
       opacityArea: 0.35, //The opacity of the area of the blob
       dotRadius: 4, //The size of the colored circles of each blog
       opacityCircles: 0.1, //The opacity of the circles of each blob
       strokeWidth: 2, //The width of the stroke around each blob
       roundStrokes: false, //If true the area and stroke will follow a round path (cardinal-closed)
-      color: d3.scaleOrdinal(d3.schemeCategory10) //Color function
+      color: d3.scaleOrdinal(coresGraph) //Color function
     };
   
     //Put all of the options into a variable called cfg
@@ -180,8 +184,8 @@ function RadarChart(selection, data, options) {
     //Scale for the radius
     var rScale = d3
       .scaleLinear()
-      .range([radius / 16, radius])
-      .domain([0, maxValue]);
+      .range([radius / 16, radius + radius / 16])
+      .domain([0, (maxValue === 0) ? 1 : maxValue]);
   
     /////////////////////////////////////////////////////////
     //////////// Create the container SVG and g /////////////
@@ -223,7 +227,7 @@ function RadarChart(selection, data, options) {
       .append("circle")
       .attr("class", "gridCircle")
       .attr("r", function(d, i) {
-        return ((radius - radius / 16) / cfg.levels + radius / 16) * d;
+        return ((radius + radius / 16) / cfg.levels) * d;
         //mudar raio (minimo n é o centro) #vemca
       })
       .style("fill", "#CDCDCD")
@@ -236,14 +240,12 @@ function RadarChart(selection, data, options) {
       .data(d3.range(1, cfg.levels + 1).reverse())
       .enter()
       .append("text")
-      .attr("class", "axisLabel")
+      .attr("class", "labelRaio")
       .attr("x", 4)
       .attr("y", function(d) {
         return (-d * radius) / cfg.levels;
       })
       .attr("dy", "0.4em")
-      .style("font-size", "10px")
-      .attr("fill", "#737373")
       .text(function(d, i) {
         return Format((maxValue * d) / cfg.levels);
       });
@@ -266,10 +268,10 @@ function RadarChart(selection, data, options) {
       .attr("x1", 0)
       .attr("y1", 0)
       .attr("x2", function(d, i) {
-        return rScale(maxValue * 1.1) * Math.cos(angleSlice * i - Math.PI / 2);
+        return rScale(((maxValue === 0) ? 1 : maxValue) * 1.1) * Math.cos(angleSlice * i - Math.PI / 2);
       })
       .attr("y2", function(d, i) {
-        return rScale(maxValue * 1.1) * Math.sin(angleSlice * i - Math.PI / 2);
+        return rScale(((maxValue === 0) ? 1 : maxValue) * 1.1) * Math.sin(angleSlice * i - Math.PI / 2);
       })
       .attr("class", "line")
       .style("stroke", "white")
@@ -278,19 +280,19 @@ function RadarChart(selection, data, options) {
     //Append the labels at each axis
     axis
       .append("text")
-      .attr("class", "legend")
-      .style("font-size", "11px")
+      .attr("class", "filtroLegenda")
+      .attr('name', d => d)
       .attr("text-anchor", "middle")
       .attr("dy", "0.35em")
       .attr("x", function(d, i) {
         return (
-          rScale(maxValue * cfg.labelFactor) *
+          rScale(((maxValue === 0) ? 1 : maxValue) * cfg.labelFactor) *
           Math.cos(angleSlice * i - Math.PI / 2)
         );
       })
       .attr("y", function(d, i) {
         return (
-          rScale(maxValue * cfg.labelFactor) *
+          rScale(((maxValue === 0) ? 1 : maxValue) * cfg.labelFactor) *
           Math.sin(angleSlice * i - Math.PI / 2)
         );
       })
@@ -396,10 +398,15 @@ function RadarChart(selection, data, options) {
     /////////////////////////////////////////////////////////
 
     //Set up the small tooltip for when you hover over a circle
-    var tooltip = grupo
-      .append("text")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
+    var tooltip = grupo.append('g').style("opacity", 0);
+      
+    var tooltopTextSombra = tooltip
+        .append("text")
+        .attr("class", "tooltipSombra")
+
+    var tooltopText = tooltip
+        .append("text")
+        .attr("class", "tooltip")
   
     //Wrapper for the invisible circles on top
     var blobCircleWrapper = grupo
@@ -418,6 +425,7 @@ function RadarChart(selection, data, options) {
       .enter()
       .append("circle")
       .attr("class", "radarInvisibleCircle")
+      .attr('name', d => d.axis)
       .attr("r", cfg.dotRadius * 1.5)
       .attr("cx", function(d, i) {
         return rScale(d.value) * Math.cos(angleSlice * i - Math.PI / 2);
@@ -432,14 +440,30 @@ function RadarChart(selection, data, options) {
         var newY = parseFloat(d3.select(this).attr("cy")) - 10;
   
         tooltip
-          .attr("x", newX)
-          .attr("y", newY)
-          .text(Format(d.value))
+          .attr('transform', `translate(${newX}, ${newY})`)
           .transition()
           .duration(200)
           .style("opacity", 1);
+
+        const filtroLegendaRespetivo = document.querySelector(`.filtroLegenda[name='${d.axis}']`)
+        filtroLegendaRespetivo.classList.toggle('onHover')
+        const boundsLegendas = filtroLegendaRespetivo.getBoundingClientRect()
+        d3.select(iconHoverShapeData).attr('style',
+            `
+                top: ${boundsLegendas.y + boundsLegendas.height * 0.5}px;
+                left: ${boundsLegendas.x + boundsLegendas.width * 0.5}px;
+                opacity: 1;
+                scale: 1;
+            `
+        ).attr('src', getImageByShapeGroup(d.axis))
+        
+        tooltopText.text(Format(d.value))
+        tooltopTextSombra.text(Format(d.value))
       })
-      .on("mouseout", function() {
+      .on("mouseout", function(e, d) {
+        const filtroLegendaRespetivo = document.querySelector(`.filtroLegenda[name='${d.axis}']`)
+        filtroLegendaRespetivo.classList.toggle('onHover')
+        d3.select(iconHoverShapeData).attr('style','opacity: 0; scale: 0;')
         tooltip
           .transition()
           .duration(200)

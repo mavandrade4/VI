@@ -150,14 +150,15 @@ const createMap = (template) => {
                         left:${(e.clientX < window.innerWidth*0.5) ? (e.clientX + 20) : (e.clientX - 20 - mapaDataInfo.clientWidth)}px;`)
               })
               .on('focus', (e, d) => {
-                console.log('teste')
-                d3.select(mapaDataClick).classed('show', true)
-
-                clearDOM(radarShapeData)
-                dadosPaisForRadar = [
-                    createDadosPaisForRadar(d.shapeGroupsQuantidade)
-                ]
-                d3.select(radarShapeData).call(RadarChartSelection)
+                paisDataAtual = d.shapeGroupsQuantidade
+                    setDadosPaisForRadar()
+                
+                if(!mapaDataClick.classList.contains('show')){
+                    d3.select(mapaDataClick).classed('show', true)
+                    clearDOM(radarShapeData)
+                    d3.select(radarShapeData).call(RadarChartSelection)
+                    d3.select(paisMapa).text(d.nomePais)
+                }
               })
               .on('blur', (e) => {
                 d3.select(mapaDataClick).classed('show', false)
@@ -168,6 +169,7 @@ const createMap = (template) => {
                     &&
                     posicaoRato.y > bounds.top && posicaoRato.y < bounds.bottom
                 ){
+                    d3.select(mapaDataClick).classed('show', true)
                     e.currentTarget.focus()
                 }
               })

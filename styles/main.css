@@ -80,39 +80,63 @@ li{
     #labelAnos {
         list-style: none;
         display: flex;
-        height: 10px;
+        height: 50px;
     }
+
+    #aparecimentosMany{
+        position: absolute;
+        translate: -50% -50%;
+        opacity: 0;
+        transition: opacity 200ms;
+    }
+        #aparecimentosMany.show{ opacity: 1;}
 
     #labelAnos > li{
         flex-grow: 1;
         position: relative;
+        display: flex;
+        flex-direction: column-reverse;
     }
+
+        #labelAnos > li:has(span.onit){ z-index: 1; }
+
+    #labelAnos > li > div{
+        translate: 0 -60px;
+        margin: 0 3px;
+        opacity: 0.25;
+        background-color: white;
+        text-wrap: nowrap;
+    }
+
+        #labelAnos > li > div:hover{ opacity: 0.75;}
+
+        #labelAnos > li:has(span.onit) > div{
+            opacity: 1;
+            background-color: var(--verde);
+        }
+        #labelAnos > li:has(span.notexist) > div{ opacity: 0.1; }
 
     #labelAnos > li > span{
         writing-mode: vertical-rl;
         text-orientation: mixed;
-        translate: -50% -80%;
+        translate: -50% 0; 
         font-size: 70%;
         font-weight: 500;
-
         position: absolute;
         left: 50%;
-
+        bottom: 10px;
         opacity: 0.8;
-
         scale: 1.1;
         transform-origin: bottom center;
     }
 
-    #labelAnos > li:has(span.onit){ z-index: 1; }
-
-    #labelAnos > li > span.onit{
-        font-weight: 700;
-        scale: 1.5;
-        font-size: 90%;
-        color: var(--verde);
-        
-    }
+        #labelAnos > li > span.onit{
+            font-weight: 700;
+            scale: 1.5;
+            font-size: 90%;
+            color: var(--verde);
+            
+        }
 
     #labelAnos > li > span.notexist{
         opacity: 0.2;
@@ -128,13 +152,13 @@ li{
 
         #sliderAnos::-webkit-slider-runnable-track{
             height: 24px;
-            /* background linear gradient definido em doSlider.js */
             outline: none;
             background-color: rgba(166, 250, 60, 0.05)
         }
         #sliderAnos::-moz-range-track{
-            height: 100px;
-            background-color: red;
+            height: 24px;
+            outline: none;
+            background-color: rgba(166, 250, 60, 0.05)
         }
 
         #sliderAnos::-webkit-slider-thumb{
@@ -144,5 +168,8 @@ li{
             background-color: white;
         }
         #sliderAnos::-moz-range-thumb{
+            appearance: none;   
             height: 24px;
+            width: 12px;
+            background-color: white;
         }
