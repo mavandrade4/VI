@@ -25,6 +25,8 @@ const setInicio = () => {
             cancelAnimationFrame(animateRaioOVNI)
             //dar clear ao body
             clearDOM(document.body)
+            cenario.querySelector('div').remove()
+            document.querySelector('.UFO').remove()
 
             //adicionar os DOMs respetivos para aparecerem data (#container e o #sliderAnos)
             setDOMforData()
