@@ -152,6 +152,7 @@ const createMap = (template) => {
               .on('focus', (e, d) => {
                 paisDataAtual = d.shapeGroupsQuantidade
                     setDadosPaisForRadar()
+
                 
                 if(!mapaDataClick.classList.contains('show')){
                     d3.select(mapaDataClick).classed('show', true)

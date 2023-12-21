@@ -36,7 +36,7 @@
           y: -1
         }
     
-        d3.select(document).on('mousedown', (e) => posicaoRato = { x: e.screenX, y: e.screenY })
+        d3.select(document).on('mousedown', (e) => posicaoRato = { x: e.clientX, y: e.clientY })
 
         const coresGraph = [ '#A6FA3C', '#71E39B', '#3CCDFA', '#8C85FA', '#DC3CFA', '#EB6B9B' ]
       </script>
