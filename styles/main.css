@@ -27,6 +27,63 @@ li{
     font-size: 0.85em;
 }
 
+#cenario{
+    overflow: hidden;
+    position: relative;
+}
+
+#cenario > * {
+    position: absolute;
+}
+
+#cenario > div{
+    position: relative;
+    width: 100%; height: 100%;
+    top: 0; left: 0;
+}
+    #cenario > div > * {
+        position: absolute;
+    }
+
+    #cenario > div > #doido{
+        scale: -1 1;
+        bottom: -10%;
+        right: 5%;
+        height: 75dvh;
+        animation: doidoAnimation 300ms ease-in forwards;
+    }
+
+        @keyframes doidoAnimation {
+            0%, 50%, 100%{ rotate: 0deg; }
+            25%, 75%{ rotate: 10deg; }
+        }
+
+#cenario > img{
+    filter: brightness(0.75);
+}
+
+    #cenario > img#imgFundo{
+        min-height: 100%; min-width: 100%;
+        top: 0; left: 50%;
+        translate: -50% 0;
+    }
+
+    #cenario > img:not(#imgFundo){
+        height: 100%; width: auto;
+    }
+
+    #cenario > img:not(#imgFundo):last-child{
+        right: 0;
+    }
+
+    html:has(#mapa) #cenario > img{
+        filter: brightness(1);
+    }
+    html:has(#mapa) #cenario{
+        filter: brightness(1.7);
+        opacity: 0.2;
+    }
+
 .viewport{
     width: 100dvw;
     height: 100dvh;

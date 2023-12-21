@@ -231,7 +231,11 @@ const createMapaDataClick = (selection) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // dar clear a um DOM
-const clearDOM = (selection) => selection.innerHTML = ''
+const clearDOM = (selection) => {
+    selection.querySelectorAll(':scope > *:not(script):not(#cenario)').forEach(
+        (child) => child.remove()
+    )
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // div #container (adicionado pós incialização "da app")
@@ -325,6 +329,8 @@ const setAnimatedUFO = (selection, width, vaca) => {
                             ////////////////////////
                             ////////////////////////
     const animateRaioOVNI = (timestamp) => {
+        const UFOcenario = cenario.querySelector('.UFO')
+
         const ovni_raioOBJECT = document.querySelector('.UFO > .ovni_raio')
         const ovni_raio = ovni_raioOBJECT.contentWindow.document.querySelector('svg > polygon')
         const ovni_vacaOBJECT = document.querySelector('.UFO > .ovni_vaca')
@@ -339,9 +345,9 @@ const setAnimatedUFO = (selection, width, vaca) => {
 
                 ////////////////
                 // definir coords dos pontos laterais (do raio)
-                const pY =  d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1920, 0])
-                const pX1 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [0, 540])
-                const pX2 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1080, 540])
+                const pY =  d3.scaleLinear([delayStarts.bottom, delayStarts.top], [5000, 0])
+                const pX1 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [0, 500])
+                const pX2 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1000, 500])
 
                 ////////////////
                 // Função de animar através do 'count' (variavel q muda a cada iteração (quase como um frameCount))
@@ -350,7 +356,7 @@ const setAnimatedUFO = (selection, width, vaca) => {
                 if(doIAnimateByCount()){
                     ovni_raio.setAttribute(
                         'points',
-                        `540,0 
+                        `500,0 
                         ${pX1(count)},${pY(count)} 
                         ${pX2(count)},${pY(count)}`
                     )
@@ -360,6 +366,13 @@ const setAnimatedUFO = (selection, width, vaca) => {
                         ovni_vacaOBJECT.style.scale = scaleVaca(count)
                         setVacaPosition()
                     }
+                }
+                else if(UFOcenario !== undefined){
+                    if(count > delayStarts.top && !UFOcenario.classList.contains('animar')) UFOcenario.classList.add('animar')
+                    else if(count < delayStarts.top && delayStarts.bottom > count
+                            && UFOcenario.classList.contains('animar')){
+                                UFOcenario.classList.remove('animar')
+                            }
                 }
 
                 ovni_raio.setAttribute('count', count + 1 * direction)

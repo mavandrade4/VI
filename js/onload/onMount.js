@@ -8,12 +8,12 @@ const setInicio = () => {
     inicioTexto.append('h1').html('UFO SUSPICIOUS SIGHTS')
     inicioTexto.append('p').html('explore UFO sightings reported by people in a questionable state of existence (we think)')
 
-    counterLimit = 60 * 4
+    counterLimit = 60 * 2
     delayStarts = {
-        bottom: 150,
-        top: counterLimit - 30
+        bottom: 30,
+        top: counterLimit - 60
     }
-    setAnimatedUFO(d3.select('body'), 200, false)
+    setAnimatedUFO(d3.select(cenario), 200, false)
     animateRaioOVNI()
 
 

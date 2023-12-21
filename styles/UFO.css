@@ -1,5 +1,5 @@
 .UFO{
-    position: absolute;
+    position: absolute !important;
 }
     .UFO, .UFO > object{
         height: auto;
@@ -18,4 +18,28 @@
         transform-origin: top center;
         box-sizing: border-box;
         padding: 0 20%;
+    }
+
+
+#cenario .UFO{
+    rotate: 20deg;
+    top: 6%; left: 23%;
+    transform-origin: top left;
+    scale: 1.4;
+}
+
+    #cenario .UFO.animar{ animation: UFOirVir 1500ms ease-in-out; }
+
+    @keyframes UFOirVir {
+        0%, 100%{
+            top: 6%; left: 23%;
+            rotate: 20deg;
+            scale: 1.4;
+        }
+        30%, 70%{ top: 20%; }
+        50%{
+            top: 15%; left: 50%;
+            rotate: -10deg;
+            scale: 0.3;
+        }
     }
