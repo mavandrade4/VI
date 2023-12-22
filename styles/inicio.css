@@ -1,18 +1,79 @@
+@font-face {
+    font-family: "Kablam";
+    src: url("../font/kablam/KaBlam.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Kablam Under";
+    src: url("../font/kablam/KaBlamUnder.ttf") format("truetype");
+}
+
+
+#inicio{
+    z-index: 10;
+}
+
 #inicioTexto{
     text-align: center;
     text-wrap: nowrap;
+    text-transform: uppercase;
 }
-    #inicioTexto > p{ font-size: 1.2em; }
 
-    #toDOMforData{
+    #inicioTexto > .inicioHeading{
+        position: relative;
+    }
+        #inicioTexto > .inicioHeading > *:first-child{
+            font-family: "Kablam", sans-serif !important;
+            position: relative;
+            z-index: 1;
+            color: var(--verde);
+            text-shadow: rgba(0, 0, 0, 0.5) 0 0 12px, rgb(255, 255, 0, 0.8) 0 0 40px;
+        }
+        #inicioTexto > .inicioHeading > *:last-child{
+            
+            font-family: "Kablam Under", sans-serif;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            translate: -50% -50%;
+            color: #348f10;
+        }
+    
+    #inicioTexto > .inicioHeading > h1{ 
+        letter-spacing: 10px;
+    }
+
+    #inicioTexto > .inicioHeading:has(h2){
+        margin-bottom: 70px;
+    }
+    #inicioTexto > .inicioHeading > h2{
+        letter-spacing: 5px;
+        font-size: 3em !important;
+    }
+
+    #inicioTexto > p{
+        font-size: 1.4em;
+        letter-spacing: 1px;
+        font-family: "Kablam", sans-serif;
+        text-shadow: rgba(0, 0, 0, 0.7) 0 0 12px;
+    }
+        #inicioTexto > p > em{
+            font-family: "Kablam", sans-serif;
+            transform: skewX(5deg);
+            color: var(--verde);
+        }
+
+    button#toDOMforData{
         margin-top: 2em;
         font-size: 1.2em;
+        font-weight: 700;
         background-color: var(--verde);
         color: black;
         border: none;
         padding: 0.75em;
+        box-shadow: rgba(0, 0, 0, 0.5) 0 0 12px, rgb(255, 255, 0, 0.5) 0 0 100px;
     }
-    #toDOMforData:hover{
+    button#toDOMforData:hover{
         cursor: pointer;
-        filter: brightness(0.8);
+        background-color: #83d320;
     }

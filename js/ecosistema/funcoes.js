@@ -260,12 +260,13 @@ const loadingFun = {
             bottom: 10,
             top: counterLimit
         }
-        setAnimatedUFO(LS, 200, true)
+        setAnimatedUFO(LS, 200, true, false)
         LS.append('h2').html('we are loading the content')
-
+        svgPolygonDimensions = [1000, 2000]
         animateRaioOVNI()
     },
     remove: () => {
+        cancelAnimationFrame(animationRaioOVNI_ID)
         loadingScreen.remove()
     }
 }
@@ -284,11 +285,13 @@ const resetUFOLoadings = () => {
         ovni: false
     }
 }
-const setAnimatedUFO = (selection, width, vaca) => {
+
+let svgPolygonDimensions = [0, 0]
+const setAnimatedUFO = (selection, width, vaca, grande) => {
     resetUFOLoadings()
     const UFOdiv = selection.append('div').attr('class', 'UFO').style('width', `${width}px`)
 
-    UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', './imgs/loading/Loading_raio.svg').attr('class', 'ovni_raio')
+    UFOdiv.append('object').attr('type', 'image/svg+xml').attr('data', `./imgs/loading/Loading_raio${grande ? '' : '_pequeno'}.svg`).attr('class', 'ovni_raio')
             .on('load', (e) => {
                 UFOloadings.raio = true
                 if(UFOloadings.vaca) setVacaPosition()
@@ -345,9 +348,9 @@ const setAnimatedUFO = (selection, width, vaca) => {
 
                 ////////////////
                 // definir coords dos pontos laterais (do raio)
-                const pY =  d3.scaleLinear([delayStarts.bottom, delayStarts.top], [5000, 0])
-                const pX1 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [0, 500])
-                const pX2 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [1000, 500])
+                const pY =  d3.scaleLinear([delayStarts.bottom, delayStarts.top], [svgPolygonDimensions[1], 0])
+                const pX1 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [0, svgPolygonDimensions[0] / 2])
+                const pX2 = d3.scaleLinear([delayStarts.bottom, delayStarts.top], [svgPolygonDimensions[0], svgPolygonDimensions[0] / 2])
 
                 ////////////////
                 // Função de animar através do 'count' (variavel q muda a cada iteração (quase como um frameCount))
@@ -356,7 +359,7 @@ const setAnimatedUFO = (selection, width, vaca) => {
                 if(doIAnimateByCount()){
                     ovni_raio.setAttribute(
                         'points',
-                        `500,0 
+                        `${svgPolygonDimensions[0] / 2},0 
                         ${pX1(count)},${pY(count)} 
                         ${pX2(count)},${pY(count)}`
                     )
@@ -367,7 +370,7 @@ const setAnimatedUFO = (selection, width, vaca) => {
                         setVacaPosition()
                     }
                 }
-                else if(UFOcenario !== undefined){
+                else if(UFOcenario !== null){
                     if(count > delayStarts.top && !UFOcenario.classList.contains('animar')) UFOcenario.classList.add('animar')
                     else if(count < delayStarts.top && delayStarts.bottom > count
                             && UFOcenario.classList.contains('animar')){
@@ -379,5 +382,5 @@ const setAnimatedUFO = (selection, width, vaca) => {
             }
         }
 
-        requestAnimationFrame(animateRaioOVNI)
+        animationRaioOVNI_ID = requestAnimationFrame(animateRaioOVNI)
     }
