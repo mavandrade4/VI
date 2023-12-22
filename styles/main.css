@@ -3,6 +3,7 @@
     padding: 0;
     color: white;
     font-family: 'Rethink Sans', sans-serif;
+    user-select: none;
 }
 
 html{
