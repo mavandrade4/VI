@@ -137,7 +137,8 @@ const createMap = (template) => {
                   .data(graficoTorta(d.duracoes))
                   .html(data => `${data.value} (${Math.round(1000 * (data.endAngle - data.startAngle) / (2 * Math.PI)) / 10}%)`)
                 
-                infoPais.select("#msshape").html(d.mostShapeGroup)
+                d3.select(totalAparecimentos).html(`${d.appears} appear${(d.appears === 1) ? '' : 's'}`)
+                d3.select(msshape).html(d.mostShapeGroup)
               })
               .on('mouseleave', (e) => {
                 d3.select(e.currentTarget).classed('over', false)

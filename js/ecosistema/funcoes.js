@@ -147,9 +147,10 @@ const createMapaDataInfo = (selection) => {
     const mapaDataInfo = selection.append('div').attr('id', 'mapaDataInfo')
 
     mapaDataInfo.append('h4')
-    mapaDataInfo.append('h5').style('margin-bottom', '4px')
+    mapaDataInfo.append('h5').style('margin-bottom', '12px').attr('id', 'totalAparecimentos')
+    mapaDataInfo.append('h5').style('margin-bottom', '4px').html('appears by time:')
 
-    mapaDataInfo.append('ul')
+    mapaDataInfo.append('ul').style('margin-bottom', '12px')
                 .selectAll('li')
                 .data(classPie).enter()
                 .append('li')

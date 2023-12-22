@@ -103,8 +103,12 @@ svg#mapa g.piecharts > g.nenhum > circle{
         z-index: 1;
     }
 
-    #mapaDataInfo > h4, #mapaDataInfo > ul{
+    #mapaDataInfo > h4{
         margin-bottom: 8px;
+    }
+
+    #mapaDataInfo > #totalAparecimentos{
+        font-style: italic;
     }
 
     #mapaDataInfo > ul > li.segundos:before     { content: "seconds: "; color: var(--azul); }
@@ -114,7 +118,7 @@ svg#mapa g.piecharts > g.nenhum > circle{
     #mapaDataInfo > ul > li.trintaDias:before   { content: "months (30days): "; color: var(--verde-2); }
     #mapaDataInfo > ul > li.anos:before         { content: "years: "; color: var(--rosa); }
     
-        #msshape:before{ content: "most seen shape: "; }
+        #msshape:before{ content: "most seen shape: "; font-weight: 500; font-style: italic;}
 
 /**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**/
 #iconHoverShapeData{
